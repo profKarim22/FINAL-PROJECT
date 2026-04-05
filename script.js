@@ -29,7 +29,14 @@ let padNode = null;
 let padLfo = null;
 let beatInterval = null;
 let ambientDecorInitialized = false;
-const bgMusicCandidates = ["Sound.mp3", "sound.mp3", "sound.wav", "sound.m4a", "sound.ogg", "sound"];
+const bgMusicCandidates = [
+  "Sound.mp3",
+  "sound.mp3",
+  "sound.wav",
+  "sound.m4a",
+  "sound.ogg",
+  "sound",
+];
 let bgMusic = null;
 let bgMusicInitialized = false;
 
@@ -46,13 +53,32 @@ const slideTitlePool = [
   "You are my favorite story",
   "You are my favorite part of every day",
   "Thank you for being my joy and my home",
-  "With you, every memory shines"
+  "With you, every memory shines",
 ];
 let slides = [];
 let collagePhotos = [];
 let collagePreloadStarted = false;
 
 const cardPhotoFiles = [
+  "photo_1_2026-03-28_23-41-33.jpg",
+  "photo_2_2026-03-28_23-41-33.jpg",
+  "photo_16_2026-03-28_23-41-33.jpg",
+  "photo_4_2026-03-28_23-41-33.jpg",
+  "photo_5_2026-03-28_23-41-33.jpg",
+  "photo_6_2026-03-28_23-41-33.jpg",
+  "photo_7_2026-03-28_23-41-33.jpg",
+  "photo_8_2026-03-28_23-41-33.jpg",
+  "photo_9_2026-03-28_23-41-33.jpg",
+  "photo_10_2026-03-28_23-41-33.jpg",
+  "photo_11_2026-03-28_23-41-33.jpg",
+  "photo_12_2026-03-28_23-41-33.jpg",
+  "photo_17_2026-03-28_23-41-33.jpg",
+  "photo_22_2026-03-28_23-41-33.jpg",
+  "photo_30_2026-03-28_23-41-33.jpg",
+  "photo_32_2026-03-28_23-41-33.jpg",
+];
+
+const heartPhotoFiles = [
   "photo_1_2026-03-28_23-41-33.jpg",
   "photo_2_2026-03-28_23-41-33.jpg",
   "photo_3_2026-03-28_23-41-33.jpg",
@@ -64,18 +90,17 @@ const cardPhotoFiles = [
   "photo_9_2026-03-28_23-41-33.jpg",
   "photo_10_2026-03-28_23-41-33.jpg",
   "photo_11_2026-03-28_23-41-33.jpg",
-  "photo_12_2026-03-28_23-41-33.jpg"
-];
-
-const heartPhotoFiles = [
-  "photo_10_2026-03-28_23-41-33.jpg",
-  "photo_11_2026-03-28_23-41-33.jpg",
   "photo_12_2026-03-28_23-41-33.jpg",
   "photo_13_2026-03-28_23-41-33.jpg",
   "photo_14_2026-03-28_23-41-33.jpg",
   "photo_15_2026-03-28_23-41-33.jpg",
+  "photo_16_2026-03-28_23-41-33.jpg",
+  "photo_17_2026-03-28_23-41-33.jpg",
+  "photo_18_2026-03-28_23-41-33.jpg",
   "photo_19_2026-03-28_23-41-33.jpg",
-  "photo_1_2026-03-28_23-41-33.jpg",
+  "photo_20_2026-03-28_23-41-33.jpg",
+  "photo_21_2026-03-28_23-41-33.jpg",
+  "photo_22_2026-03-28_23-41-33.jpg",
   "photo_23_2026-03-28_23-41-33.jpg",
   "photo_24_2026-03-28_23-41-33.jpg",
   "photo_25_2026-03-28_23-41-33.jpg",
@@ -83,8 +108,9 @@ const heartPhotoFiles = [
   "photo_27_2026-03-28_23-41-33.jpg",
   "photo_28_2026-03-28_23-41-33.jpg",
   "photo_29_2026-03-28_23-41-33.jpg",
-  "photo_2_2026-03-28_23-41-33.jpg",
   "photo_30_2026-03-28_23-41-33.jpg",
+  "photo_31_2026-03-28_23-41-33.jpg",
+  "photo_32_2026-03-28_23-41-33.jpg",
   "photo_33_2026-03-28_23-41-33.jpg",
   "photo_34_2026-03-28_23-41-33.jpg",
   "photo_35_2026-03-28_23-41-33.jpg",
@@ -93,15 +119,12 @@ const heartPhotoFiles = [
   "photo_38_2026-03-28_23-41-33.jpg",
   "photo_39_2026-03-28_23-41-33.jpg",
   "photo_40_2026-03-28_23-41-33.jpg",
+  "photo_41_2026-03-28_23-41-33.jpg",
   "photo_42_2026-03-28_23-41-33.jpg",
+  "photo_43_2026-03-28_23-41-33.jpg",
   "photo_44_2026-03-28_23-41-33.jpg",
+  "photo_45_2026-03-28_23-41-33.jpg",
   "photo_46_2026-03-28_23-41-33.jpg",
-  "photo_4_2026-03-28_23-41-33.jpg",
-  "photo_5_2026-03-28_23-41-33.jpg",
-  "photo_6_2026-03-28_23-41-33.jpg",
-  "photo_7_2026-03-28_23-41-33.jpg",
-  "photo_8_2026-03-28_23-41-33.jpg",
-  "photo_9_2026-03-28_23-41-33.jpg"
 ];
 
 function extractPhotoOrder(name) {
@@ -126,13 +149,13 @@ function getSlideTitle(index) {
 function fallbackSlidesFromStaticList() {
   return sortPhotoNames(cardPhotoFiles).map((fileName, index) => ({
     title: getSlideTitle(index),
-    image: `Cards_Photos/${fileName}`
+    image: `Cards_Photos/${fileName}`,
   }));
 }
 
 function fallbackCollageFromStaticList() {
   const mapped = sortPhotoNames(heartPhotoFiles).map(
-    (fileName) => `Heart_Photos/${fileName}`
+    (fileName) => `Heart_Photos/${fileName}`,
   );
 
   if (mapped.length > 0) {
@@ -146,7 +169,7 @@ function fallbackCollageFromStaticList() {
     return makePhotoSvg(
       `Memory ${seed}`,
       `hsl(${hueA} 72% 70%)`,
-      `hsl(${hueB} 62% 52%)`
+      `hsl(${hueB} 62% 52%)`,
     );
   });
 }
@@ -207,11 +230,13 @@ async function preparePhotoCollections() {
     dynamicCardPhotos.length > 0
       ? dynamicCardPhotos.map((image, index) => ({
           title: getSlideTitle(index),
-          image
+          image,
         }))
       : fallbackSlidesFromStaticList();
 
-  const dynamicHeartPhotos = await tryLoadFolderPhotoPaths(heartFolderCandidates);
+  const dynamicHeartPhotos = await tryLoadFolderPhotoPaths(
+    heartFolderCandidates,
+  );
   collagePhotos =
     dynamicHeartPhotos.length > 0
       ? dynamicHeartPhotos
@@ -277,7 +302,7 @@ function initBackgroundMusic() {
         () => {
           tryBackgroundMusicPlayback();
         },
-        { once: true }
+        { once: true },
       );
       bgMusic.load();
     }
@@ -310,7 +335,7 @@ function initBackgroundMusic() {
     () => {
       tryBackgroundMusicPlayback();
     },
-    { once: true }
+    { once: true },
   );
 
   tryNextSource();
@@ -330,7 +355,7 @@ async function preloadImage(url) {
     if (typeof img.decode === "function") {
       img.decode().then(done).catch(done);
     }
-    
+
     // Timeout after 3 seconds to avoid blocking
     setTimeout(done, 3000);
   });
@@ -356,20 +381,31 @@ function initAmbientDecor() {
   function createLayer(heartCount, shapeCount) {
     const layer = document.createElement("div");
     layer.className = "ambient-layer";
-    
+
     // Reduce animations on mobile/low-end devices
-    const isLowPerf = window.matchMedia("(max-width: 900px)").matches || 
-                      (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2);
-    const finalHeartCount = isLowPerf ? Math.ceil(heartCount * 0.5) : heartCount;
-    const finalShapeCount = isLowPerf ? Math.ceil(shapeCount * 0.5) : shapeCount;
+    const isLowPerf =
+      window.matchMedia("(max-width: 900px)").matches ||
+      (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2);
+    const finalHeartCount = isLowPerf
+      ? Math.ceil(heartCount * 0.5)
+      : heartCount;
+    const finalShapeCount = isLowPerf
+      ? Math.ceil(shapeCount * 0.5)
+      : shapeCount;
 
     for (let i = 0; i < finalHeartCount; i += 1) {
       const heart = document.createElement("span");
       heart.className = "ambient-heart";
       heart.style.setProperty("--x", `${(Math.random() * 100).toFixed(2)}vw`);
-      heart.style.setProperty("--s", `${(9 + Math.random() * 12).toFixed(1)}px`);
+      heart.style.setProperty(
+        "--s",
+        `${(9 + Math.random() * 12).toFixed(1)}px`,
+      );
       heart.style.setProperty("--d", `${(9 + Math.random() * 9).toFixed(2)}s`);
-      heart.style.setProperty("--delay", `${(-Math.random() * 14).toFixed(2)}s`);
+      heart.style.setProperty(
+        "--delay",
+        `${(-Math.random() * 14).toFixed(2)}s`,
+      );
       layer.appendChild(heart);
     }
 
@@ -380,8 +416,14 @@ function initAmbientDecor() {
       shape.style.setProperty("--x", `${(Math.random() * 100).toFixed(2)}vw`);
       shape.style.setProperty("--w", `${size}px`);
       shape.style.setProperty("--h", `${size}px`);
-      shape.style.setProperty("--d", `${(14 + Math.random() * 12).toFixed(2)}s`);
-      shape.style.setProperty("--delay", `${(-Math.random() * 16).toFixed(2)}s`);
+      shape.style.setProperty(
+        "--d",
+        `${(14 + Math.random() * 12).toFixed(2)}s`,
+      );
+      shape.style.setProperty(
+        "--delay",
+        `${(-Math.random() * 16).toFixed(2)}s`,
+      );
       layer.appendChild(shape);
     }
 
@@ -548,7 +590,10 @@ function drawRain() {
   }
 
   // Use lower frame rate on low-performance devices
-  const frameDelay = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2 ? 32 : 16;
+  const frameDelay =
+    navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2
+      ? 32
+      : 16;
   setTimeout(() => {
     rainAnimFrame = requestAnimationFrame(drawRain);
   }, frameDelay);
@@ -696,7 +741,11 @@ function advanceSlide() {
 
 function heartPoint(t) {
   const x = 16 * Math.pow(Math.sin(t), 3);
-  const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+  const y =
+    13 * Math.cos(t) -
+    5 * Math.cos(2 * t) -
+    2 * Math.cos(3 * t) -
+    Math.cos(4 * t);
   return { x, y };
 }
 
@@ -710,7 +759,7 @@ function generateHeartPoints() {
     const p = heartPoint(t);
     points.push({
       x: (p.x + 18) / 36,
-      y: 0.08 + (1 - (p.y + 17) / 34) * 0.84
+      y: 0.08 + (1 - (p.y + 17) / 34) * 0.84,
     });
   }
 
@@ -720,7 +769,7 @@ function generateHeartPoints() {
     const p = heartPoint(t);
     points.push({
       x: (p.x * 0.74 + 18) / 36,
-      y: 0.12 + (1 - ((p.y * 0.74 + 0.9) + 17) / 34) * 0.78
+      y: 0.12 + (1 - (p.y * 0.74 + 0.9 + 17) / 34) * 0.78,
     });
   }
 
@@ -730,7 +779,7 @@ function generateHeartPoints() {
     const p = heartPoint(t);
     points.push({
       x: (p.x * 0.54 + 18) / 36,
-      y: 0.17 + (1 - ((p.y * 0.54 + 1.4) + 17) / 34) * 0.7
+      y: 0.17 + (1 - (p.y * 0.54 + 1.4 + 17) / 34) * 0.7,
     });
   }
 
@@ -761,7 +810,10 @@ function launchCollage() {
     tile.style.setProperty("--ty", `${(ny * 100).toFixed(2)}%`);
     tile.style.setProperty("--sx", `${Math.random() * 240 - 120}vw`);
     tile.style.setProperty("--sy", `${Math.random() * 200 - 100}vh`);
-    tile.style.setProperty("--sr", `${(Math.random() * 120 - 60).toFixed(1)}deg`);
+    tile.style.setProperty(
+      "--sr",
+      `${(Math.random() * 120 - 60).toFixed(1)}deg`,
+    );
     tile.style.setProperty("--fr", `${(Math.random() * 16 - 8).toFixed(1)}deg`);
 
     tile.style.setProperty("--w", `${(48 + Math.random() * 20).toFixed(1)}px`);
@@ -775,7 +827,6 @@ function launchCollage() {
     if (i % 7 === 0) {
       playTone(390 + i * 5, 0.08, "triangle", 0.01, i * 0.01);
     }
-
   }
 
   heartCollage.appendChild(fragment);
@@ -829,7 +880,9 @@ sceneStory.addEventListener("click", (event) => {
 });
 
 window.addEventListener("resize", fitRainCanvas);
-document.addEventListener("pointerdown", tryBackgroundMusicPlayback, { passive: true });
+document.addEventListener("pointerdown", tryBackgroundMusicPlayback, {
+  passive: true,
+});
 document.addEventListener("keydown", tryBackgroundMusicPlayback);
 if (soundToggle) {
   soundToggle.addEventListener("click", toggleSound);
