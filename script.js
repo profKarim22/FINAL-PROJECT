@@ -225,22 +225,8 @@ async function tryLoadFolderPhotoPaths(folderCandidates) {
 }
 
 async function preparePhotoCollections() {
-  const dynamicCardPhotos = await tryLoadFolderPhotoPaths(cardFolderCandidates);
-  slides =
-    dynamicCardPhotos.length > 0
-      ? dynamicCardPhotos.map((image, index) => ({
-          title: getSlideTitle(index),
-          image,
-        }))
-      : fallbackSlidesFromStaticList();
-
-  const dynamicHeartPhotos = await tryLoadFolderPhotoPaths(
-    heartFolderCandidates,
-  );
-  collagePhotos =
-    dynamicHeartPhotos.length > 0
-      ? dynamicHeartPhotos
-      : fallbackCollageFromStaticList();
+  slides = fallbackSlidesFromStaticList();
+  collagePhotos = fallbackCollageFromStaticList();
 }
 
 function makePhotoSvg(label, colorA, colorB) {
